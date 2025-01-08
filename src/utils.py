@@ -1,14 +1,20 @@
 import pickle
-import logging
+from src.logger import logging
+
+import os
 
 def save_object(file_path, obj):
     """
     Saves a Python object to a file using pickle.
     """
     try:
+        dir_path= os.path.dirname(file_path)
+        os.makedirs(dir_path,exist_ok=True)
+
         with open(file_path, "wb") as file:
             pickle.dump(obj, file)
         logging.info(f"Object saved successfully to {file_path}.")
+        
     except Exception as e:
         logging.error(f"Error saving object to {file_path}: {e}")
         raise e
