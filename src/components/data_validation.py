@@ -65,7 +65,7 @@ class DataValidator(BaseEstimator, TransformerMixin):
         """
         return self
 
-    def transform(self, X):
+    def transform(self, X: pd.DataFrame):
         """
         Validates the dataset and returns it if all checks pass.
         """

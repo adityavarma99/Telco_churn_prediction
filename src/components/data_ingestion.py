@@ -9,6 +9,9 @@ from src.exception import CustomException
 from src.components.data_tranformation import DataTransformation
 from src.components.data_tranformation import DataTransformationConfig
 
+from src.components.model_trainer import ModelTrainer
+from src.components.model_trainer import ModelTrainerConfig
+
 @dataclass
 class DataIngestionConfig:
     raw_data_path: str = os.path.join("artifacts", "raw_data.csv")
@@ -57,7 +60,15 @@ if __name__ == "__main__":
 
         # Step 2: Data Transformation
         data_transformation = DataTransformation()
-        data_transformation.initiate_data_transformation(train_data, test_data, target_column="Churn")
+        X_train_resampled, y_train_resampled, X_test_selected, y_test, selected_features = data_transformation.initiate_data_transformation(
+    train_data, test_data, target_column="Churn")
+
+        # Optionally group into train and test arrays
+        train_arr = (X_train_resampled, y_train_resampled)
+        test_arr = (X_test_selected, y_test)
+
+        modeltrainer = ModelTrainer()
+        modeltrainer.train_and_evaluate(X_train_resampled, y_train_resampled, X_test_selected, y_test, selected_features)
 
     except Exception as e:
         logging.error(f"Pipeline execution failed: {e}")

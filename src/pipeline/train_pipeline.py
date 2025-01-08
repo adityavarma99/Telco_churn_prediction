@@ -1,7 +1,7 @@
 from src.components.data_ingestion import DataIngestion
-from src.components.data_transformation import DataTransformation
+from src.components.data_tranformation import DataTransformation
 from src.components.model_trainer import ModelTrainer
-import logging
+from src.logger import logging
 
 def start_pipeline(file_path):
     """
