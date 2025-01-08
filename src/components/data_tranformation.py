@@ -6,7 +6,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.feature_selection import SelectKBest, f_classif
-from imblearn.combine import SMOTEENN
+from imblearn.over_sampling import SMOTEN  # Changed from SMOTE to SMOTNEE
 from dataclasses import dataclass
 from src.logger import logging
 from src.utils import save_object  # Corrected import
@@ -108,13 +108,13 @@ class DataTransformation:
 
             save_object(self.config.selected_features_file_path, selected_features)
 
-            smoteenn = SMOTEENN(random_state=42)
-            
-            X_train_resampled, y_train_resampled = smoteenn.fit_resample(X_train_selected, y_train)
+            # Replacing SMOTE with SMOTNEE for better quality sampling
+            smotnee = SMOTEN(random_state=42)
+            X_train_resampled, y_train_resampled = smotnee.fit_resample(X_train_selected, y_train)
 
             save_object(self.config.preprocessor_obj_file_path, preprocessor)
+
             logging.info("Data transformation process completed successfully.")
-            
             return X_train_resampled, y_train_resampled, X_test_selected, y_test, selected_features
         except Exception as e:
             logging.error(f"Error in data transformation: {e}")

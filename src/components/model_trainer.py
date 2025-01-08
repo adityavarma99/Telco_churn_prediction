@@ -42,48 +42,50 @@ class ModelTrainer:
 
 
             # Define models and hyperparameters
+            
+
+            
             models = {
                 "Random Forest": (RandomForestClassifier(), {
                     "n_estimators": [50, 100, 200],
                     "max_depth": [5, 10, 20, None],
                     "min_samples_split": [2, 5, 10],
-                    "min_samples_leaf": [1, 2, 4],
-                    "bootstrap": [True, False]
-                }),
-                "Gradient Boosting": (GradientBoostingClassifier(), {
-                    "n_estimators": [50, 100, 200],
-                    "learning_rate": [0.01, 0.05, 0.1, 0.2],
-                    "max_depth": [3, 5, 7],
-                    "min_samples_split": [2, 5],
-                    "min_samples_leaf": [1, 2]
-                }),
-                "Logistic Regression": (LogisticRegression(max_iter=1000, solver="saga"), [
-                    {"C": [0.1, 1, 10], "penalty": ["l1"], "solver": ["saga"]},
-                    {"C": [0.1, 1, 10], "penalty": ["l2"], "solver": ["saga"]},
-                    {"C": [0.1, 1, 10], "penalty": ["elasticnet"], "solver": ["saga"], "l1_ratio": [0.1, 0.5, 0.9]}
-                ]),
-                "Decision Tree": (DecisionTreeClassifier(), {
-                    "criterion": ["gini", "entropy"],
-                    "max_depth": [5, 10, 20],
-                    "min_samples_split": [2, 5, 10],
                     "min_samples_leaf": [1, 2, 4]
                 }),
+                "Gradient Boosting": (GradientBoostingClassifier(), {
+                    "n_estimators": [100, 150],  # Increased range
+                    "learning_rate": [0.05, 0.1],  # Added higher learning rate
+                    "max_depth": [3, 5, 7],  # Increased range for max_depth
+                    "min_samples_split": [2, 5],  # Kept same options
+                    "min_samples_leaf": [1, 2]  # Kept same options
+                }),
+                "Logistic Regression": (LogisticRegression(max_iter=1000, solver="saga"), [
+                    {"C": [0.1, 1], "penalty": ["l2"], "solver": ["saga"]},  # Added more C options
+                    {"C": [0.1, 1], "penalty": ["elasticnet"], "solver": ["saga"], "l1_ratio": [0.1, 0.5]}  # Added l1_ratio options
+                ]),
+                "Decision Tree": (DecisionTreeClassifier(), {
+                    "criterion": ["gini", "entropy"],  # Added entropy back
+                    "max_depth": [10, 20],  # Added more depth options
+                    "min_samples_split": [2, 5],  # Kept same options
+                    "min_samples_leaf": [1, 2, 4]  # Added more options
+                }),
                 "AdaBoost": (AdaBoostClassifier(), {
-                    "n_estimators": [50, 100, 200],
-                    "learning_rate": [0.01, 0.05, 0.1, 0.5]
+                    "n_estimators": [100, 150],  # Increased n_estimators range
+                    "learning_rate": [0.05, 0.1]  # Added a higher learning rate
                 }),
                 "Support Vector Machine": (SVC(), {
-                    "C": [0.1, 1, 10, 100],
-                    "kernel": ["linear", "rbf", "poly", "sigmoid"],
-                    "gamma": ["scale", "auto"],
-                    "degree": [2, 3, 4]
+                    "C": [0.1, 1, 10],  # Increased range for C
+                    "kernel": ["linear", "rbf"],  # Removed poly and sigmoid for simplicity
+                    "gamma": ["scale", "auto"],  # Kept same options
+                    "degree": [3]  # Kept degree as 3
                 }),
                 "K-Nearest Neighbors": (KNeighborsClassifier(), {
-                    "n_neighbors": [3, 5, 7, 9],
-                    "weights": ["uniform", "distance"],
-                    "metric": ["euclidean", "manhattan", "minkowski"]
+                    "n_neighbors": [5, 7, 10],  # Added more options for neighbors
+                    "weights": ["uniform", "distance"],  # Kept same options
+                    "metric": ["euclidean", "manhattan"]  # Kept same options
                 })
             }
+                        
 
 
             best_model = None

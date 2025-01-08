@@ -62,7 +62,8 @@ if __name__ == "__main__":
         data_transformation = DataTransformation()
         X_train_resampled, y_train_resampled, X_test_selected, y_test, selected_features = data_transformation.initiate_data_transformation(
     train_data, test_data, target_column="Churn")
-
+        
+        # Step 3: Model Trainer
         # Optionally group into train and test arrays
         train_arr = (X_train_resampled, y_train_resampled)
         test_arr = (X_test_selected, y_test)
