@@ -2,7 +2,8 @@ import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
-import logging
+from src.logger import logging
+from src.exception import CustomException
 
 @dataclass
 class DataIngestionConfig:
@@ -16,13 +17,16 @@ class DataIngestion:
         os.makedirs(os.path.dirname(self.config.raw_data_path), exist_ok=True)
 
     def initiate_data_ingestion(self, file_path: str):
+        logging.info("Entered the data ingestion component")
         try:
             logging.info("Starting data ingestion...")
-            df = pd.read_csv(file_path)
+            df = pd.read_csv('notebook/data/Telco-Customer-Churn.csv')
             logging.info(f"Dataset loaded with shape: {df.shape}")
 
+            os.makedirs(os.path.dirname(self.config.train_data_path),exist_ok=True)
+
             # Save raw data
-            df.to_csv(self.config.raw_data_path, index=False)
+            df.to_csv(self.config.raw_data_path, index=False,header=True)
             logging.info("Raw data saved successfully.")
 
             # Split data
@@ -38,3 +42,7 @@ class DataIngestion:
         except Exception as e:
             logging.error(f"Error in data ingestion: {e}")
             raise e
+        
+if __name__=="__main__":
+    obj=DataIngestion()
+    obj.initiate_data_ingestion(file_path="notebook/data/Telco-Customer-Churn.csv")
