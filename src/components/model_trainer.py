@@ -6,11 +6,9 @@ from sklearn.ensemble import (
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
-from xgboost import XGBClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.model_selection import GridSearchCV  # Changed from RandomizedSearchCV to GridSearchCV
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import accuracy_score, classification_report
 import os
 import pandas as pd
 
@@ -20,11 +18,9 @@ from src.utils import save_object
 from src.exception import CustomException
 from src.logger import logging
 
-
 @dataclass
 class ModelTrainerConfig:
     trained_model_path: str = os.path.join("artifacts", "best_model.pkl")
-
 
 class ModelTrainer:
     def __init__(self):
@@ -34,17 +30,13 @@ class ModelTrainer:
         try:
             logging.info("Starting model training with hyperparameter tuning")
 
-            # Ensure transformed datasets are converted into DataFrames with proper feature names
+            # Ensure transformed datasets are DataFrames with proper feature names
             if not isinstance(X_train, pd.DataFrame):
                 X_train = pd.DataFrame(X_train, columns=selected_features)
             if not isinstance(X_test, pd.DataFrame):
                 X_test = pd.DataFrame(X_test, columns=selected_features)
 
-
             # Define models and hyperparameters
-            
-
-            
             models = {
                 "Random Forest": (RandomForestClassifier(), {
                     "n_estimators": [50, 100, 200],
@@ -53,40 +45,26 @@ class ModelTrainer:
                     "min_samples_leaf": [1, 2, 4]
                 }),
                 "Gradient Boosting": (GradientBoostingClassifier(), {
-                    "n_estimators": [100, 150],  # Increased range
-                    "learning_rate": [0.05, 0.1],  # Added higher learning rate
-                    "max_depth": [3, 5, 7],  # Increased range for max_depth
-                    "min_samples_split": [2, 5],  # Kept same options
-                    "min_samples_leaf": [1, 2]  # Kept same options
+                    "n_estimators": [100, 150, 200],
+                    "learning_rate": [0.05, 0.1],
+                    "max_depth": [3, 5, 7],
+                    "min_samples_split": [2, 5],
+                    "min_samples_leaf": [1, 2]
                 }),
                 "Logistic Regression": (LogisticRegression(max_iter=1000, solver="saga"), [
-                    {"C": [0.1, 1], "penalty": ["l2"], "solver": ["saga"]},  # Added more C options
-                    {"C": [0.1, 1], "penalty": ["elasticnet"], "solver": ["saga"], "l1_ratio": [0.1, 0.5]}  # Added l1_ratio options
+                    {"C": [0.1, 1], "penalty": ["l2"], "solver": ["saga"]},
+                    {"C": [0.1, 1], "penalty": ["elasticnet"], "solver": ["saga"], "l1_ratio": [0.1, 0.5]}
                 ]),
-                "Decision Tree": (DecisionTreeClassifier(), {
-                    "criterion": ["gini", "entropy"],  # Added entropy back
-                    "max_depth": [10, 20],  # Added more depth options
-                    "min_samples_split": [2, 5],  # Kept same options
-                    "min_samples_leaf": [1, 2, 4]  # Added more options
-                }),
                 "AdaBoost": (AdaBoostClassifier(), {
-                    "n_estimators": [100, 150],  # Increased n_estimators range
-                    "learning_rate": [0.05, 0.1]  # Added a higher learning rate
+                    "n_estimators": [50, 100, 150],
+                    "learning_rate": [0.01, 0.05, 0.1]
                 }),
                 "Support Vector Machine": (SVC(), {
-                    "C": [0.1, 1, 10],  # Increased range for C
-                    "kernel": ["linear", "rbf"],  # Removed poly and sigmoid for simplicity
-                    "gamma": ["scale", "auto"],  # Kept same options
-                    "degree": [3]  # Kept degree as 3
-                }),
-                "K-Nearest Neighbors": (KNeighborsClassifier(), {
-                    "n_neighbors": [5, 7, 10],  # Added more options for neighbors
-                    "weights": ["uniform", "distance"],  # Kept same options
-                    "metric": ["euclidean", "manhattan"]  # Kept same options
+                    "C": [0.1, 1, 10],
+                    "kernel": ["linear", "rbf"],
+                    "gamma": ["scale", "auto"]
                 })
             }
-                        
-
 
             best_model = None
             best_score = 0
@@ -95,8 +73,8 @@ class ModelTrainer:
 
             for name, (model, params) in models.items():
                 logging.info(f"Training model: {name} with hyperparameter tuning...")
-                
-                # Use GridSearchCV for exhaustive search over parameters
+
+                # Use GridSearchCV for hyperparameter tuning
                 grid = GridSearchCV(model, params, cv=3, scoring="accuracy", verbose=1)
                 grid.fit(X_train, y_train)
 
@@ -128,4 +106,3 @@ class ModelTrainer:
         except Exception as e:
             logging.error(f"Error in model training: {e}")
             raise CustomException(str(e), e)
-

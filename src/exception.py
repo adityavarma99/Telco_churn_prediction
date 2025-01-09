@@ -1,24 +1,18 @@
 import sys
-from src.logger import logging
+import traceback
 
 class CustomException(Exception):
-    """
-    Custom exception class for better error handling and logging.
-    """
-    def __init__(self, error_message: str, error_details: sys):
+    def __init__(self, error_message: str, error_details: Exception):
         super().__init__(error_message)
-        self.error_message = CustomException.get_detailed_error_message(error_message, error_details)
+        self.error_message = self.get_detailed_error_message(error_message, error_details)
 
     @staticmethod
-    def get_detailed_error_message(error_message: str, error_details: sys) -> str:
-        """
-        Constructs a detailed error message.
-        """
-        _, _, exc_tb = error_details.exc_info()
-        file_name = exc_tb.tb_frame.f_code.co_filename
-        line_number = exc_tb.tb_lineno
-        detailed_message = f"Error occurred in file [{file_name}] at line [{line_number}]: {error_message}"
-        return detailed_message
+    def get_detailed_error_message(error_message: str, error_details: Exception):
+        _, _, exc_tb = sys.exc_info()
+        if exc_tb is not None:
+            tb = traceback.extract_tb(exc_tb)
+            error_detail = "".join(traceback.format_list(tb))
+        else:
+            error_detail = "Traceback not available."
 
-    def __str__(self):
-        return self.error_message
+        return f"{error_message}\nError Details:\n{error_detail}"

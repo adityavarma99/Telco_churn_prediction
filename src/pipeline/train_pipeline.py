@@ -17,14 +17,14 @@ def start_pipeline(file_path):
 
         # Step 2: Data Transformation
         transformation = DataTransformation()
-        X_train, y_train, X_test, y_test = transformation.initiate_data_transformation(
+        X_train, y_train, X_test, y_test, selected_features = transformation.initiate_data_transformation(
             train_path, test_path, target_column="Churn"
         )
         logging.info(f"Data transformation completed. Training and testing data prepared.")
 
         # Step 3: Model Training
         trainer = ModelTrainer()
-        best_model, best_score = trainer.train_and_evaluate(X_train, y_train, X_test, y_test)
+        best_model, best_score = trainer.train_and_evaluate(X_train, y_train, X_test, y_test, selected_features)
         logging.info(f"Model training completed. Best Model Accuracy: {best_score}")
 
         return best_model, best_score

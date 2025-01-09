@@ -52,24 +52,29 @@ class DataIngestion:
             logging.error(f"Error in data ingestion: {e}")
             raise CustomException(str(e), e)
 
+
 if __name__ == "__main__":
     try:
+        logging.info("Pipeline execution started.")
+
         # Step 1: Data Ingestion
         obj = DataIngestion()
         train_data, test_data = obj.initiate_data_ingestion(file_path="notebook/data/Telco-Customer-Churn.csv")
+        logging.info(f"Data ingestion completed. Train: {train_data}, Test: {test_data}")
 
         # Step 2: Data Transformation
         data_transformation = DataTransformation()
         X_train_resampled, y_train_resampled, X_test_selected, y_test, selected_features = data_transformation.initiate_data_transformation(
-    train_data, test_data, target_column="Churn")
-        
-        # Step 3: Model Trainer
-        # Optionally group into train and test arrays
-        train_arr = (X_train_resampled, y_train_resampled)
-        test_arr = (X_test_selected, y_test)
+            train_data, test_data, target_column="Churn"
+        )
+        logging.info(f"Data transformation completed. Simplified selected features: {selected_features}")
 
+        # Step 3: Model Trainer
         modeltrainer = ModelTrainer()
-        modeltrainer.train_and_evaluate(X_train_resampled, y_train_resampled, X_test_selected, y_test, selected_features)
+        best_model, best_score = modeltrainer.train_and_evaluate(
+            X_train_resampled, y_train_resampled, X_test_selected, y_test, selected_features
+        )
+        logging.info(f"Model training completed. Best Score: {best_score}")
 
     except Exception as e:
         logging.error(f"Pipeline execution failed: {e}")
