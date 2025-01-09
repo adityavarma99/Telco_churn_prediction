@@ -1,34 +1,27 @@
 from src.components.data_ingestion import DataIngestion
 from src.components.data_tranformation import DataTransformation
 from src.components.model_trainer import ModelTrainer
-from src.logger import logging
 
 def start_pipeline(file_path):
-    """
-    Executes the complete training pipeline: data ingestion, transformation, and model training.
-    """
     try:
-        logging.info("Starting the training pipeline...")
-
         # Step 1: Data Ingestion
-        ingestion = DataIngestion()
-        train_path, test_path = ingestion.initiate_data_ingestion(file_path)
-        logging.info(f"Data ingestion completed. Train data: {train_path}, Test data: {test_path}")
+        data_ingestion = DataIngestion()
+        train_data, test_data = data_ingestion.initiate_data_ingestion(file_path=file_path)
+        print(f"Data ingestion completed. Train: {train_data}, Test: {test_data}")
 
         # Step 2: Data Transformation
-        transformation = DataTransformation()
-        X_train, y_train, X_test, y_test, selected_features = transformation.initiate_data_transformation(
-            train_path, test_path, target_column="Churn"
+        data_transformation = DataTransformation()
+        X_train_resampled, y_train_resampled, X_test_selected, y_test, selected_features = data_transformation.initiate_data_transformation(
+            train_data, test_data, target_column="Churn"
         )
-        logging.info(f"Data transformation completed. Training and testing data prepared.")
+        print(f"Data transformation completed. Selected features: {selected_features}")
 
-        # Step 3: Model Training
-        trainer = ModelTrainer()
-        best_model, best_score = trainer.train_and_evaluate(X_train, y_train, X_test, y_test, selected_features)
-        logging.info(f"Model training completed. Best Model Accuracy: {best_score}")
-
-        return best_model, best_score
+        # Step 3: Model Trainer
+        model_trainer = ModelTrainer()
+        best_model, best_score = model_trainer.train_and_evaluate(
+            X_train_resampled, y_train_resampled, X_test_selected, y_test, selected_features
+        )
+        print(f"Model training completed. Best Score: {best_score}")
 
     except Exception as e:
-        logging.error(f"Error in training pipeline: {e}")
-        raise e
+        print(f"Pipeline execution failed: {e}")

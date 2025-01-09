@@ -1,3 +1,4 @@
-'tenure', 'InternetService_Fiber optic', 'OnlineSecurity_No', 'OnlineBackup_No', 'DeviceProtection_No', 'TechSupport_No', 'StreamingMovies_No internet service', 'Contract_Month-to-month', 'Contract_Two year', 'PaymentMethod_Electronic check'
-No7590-VHVEG,Female,0,Yes,No,1,Yes,No phone service,DSL,No,Yes,No,No,No,No,Month-to-month,No,Electronic check,29.85,29.85
-5575-GNVDE,Male,1,No,No,14,Yes,No,DSL,Yes,No,Yes,No,No,Yes,One year,No,Mailed check,56.95,529.5
+gender,SeniorCitizen,Partner,Dependents,tenure,PhoneService,MultipleLines,InternetService,OnlineSecurity,OnlineBackup,DeviceProtection,TechSupport,StreamingTV,StreamingMovies,Contract,PaperlessBilling,PaymentMethod,MonthlyCharges,TotalCharges
+Female,0,Yes,No,1,No,No phone service,DSL,No,Yes,No,No,No,No,Month-to-month,Yes,Electronic check,29.85,29.85
+Male,0,No,No,34,Yes,No,DSL,Yes,No,Yes,No,No,No,One year,No,Mailed check,56.95,189.5
+Male,0,No,No,2,No,No,DSL,Yes,Yes,No,No,No,Yes,Month-to-month,Yes,Mailed check,53.85,208.15
