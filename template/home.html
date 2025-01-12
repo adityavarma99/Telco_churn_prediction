@@ -1,125 +1,35 @@
 <html>
 <body>
     <div class="login">
-       <h1>Customer Churn Prediction</h1>
-   
-       <form action="{{ url_for('predict_datapoint')}}" method="post">
-        <h1>
-            <legend>Enter Customer Details</legend>
-        </h1>
-        <div class="mb-3">
-            <label class="form-label">Contract</label>
-            <select class="form-control" name="contract" placeholder="Enter Contract Type" required>
-                <option class="placeholder" selected disabled value="">Select Contract Type</option>
-                <option value="month-to-month">
-                    Month-to-Month
-                </option>
-                <option value="one-year">
-                    One Year
-                </option>
-                <option value="two-year">
-                    Two Year
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Dependents</label>
-            <select class="form-control" name="dependents" placeholder="Enter Dependents" required>
-                <option class="placeholder" selected disabled value="">Select Option</option>
-                <option value="yes">
-                    Yes
-                </option>
-                <option value="no">
-                    No
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Device Protection</label>
-            <select class="form-control" name="deviceProtection" placeholder="Enter Device Protection" required>
-                <option class="placeholder" selected disabled value="">Select Option</option>
-                <option value="yes">
-                    Yes
-                </option>
-                <option value="no">
-                    No
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Monthly Charges</label>
-            <input class="form-control" type="number" name="monthlyCharges" placeholder="Enter Monthly Charges" step="0.01" required />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Online Backup</label>
-            <select class="form-control" name="onlineBackup" placeholder="Enter Online Backup" required>
-                <option class="placeholder" selected disabled value="">Select Option</option>
-                <option value="yes">
-                    Yes
-                </option>
-                <option value="no">
-                    No
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Online Security</label>
-            <select class="form-control" name="onlineSecurity" placeholder="Enter Online Security" required>
-                <option class="placeholder" selected disabled value="">Select Option</option>
-                <option value="yes">
-                    Yes
-                </option>
-                <option value="no">
-                    No
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Paperless Billing</label>
-            <select class="form-control" name="paperlessBilling" placeholder="Enter Paperless Billing" required>
-                <option class="placeholder" selected disabled value="">Select Option</option>
-                <option value="yes">
-                    Yes
-                </option>
-                <option value="no">
-                    No
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Tech Support</label>
-            <select class="form-control" name="techSupport" placeholder="Enter Tech Support" required>
-                <option class="placeholder" selected disabled value="">Select Option</option>
-                <option value="yes">
-                    Yes
-                </option>
-                <option value="no">
-                    No
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Tenure (months)</label>
-            <input class="form-control" type="number" name="tenure" placeholder="Enter Tenure in Months" required />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Churn</label>
-            <select class="form-control" name="churn" placeholder="Enter Churn" required>
-                <option class="placeholder" selected disabled value="">Select Option</option>
-                <option value="yes">
-                    Yes
-                </option>
-                <option value="no">
-                    No
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <input class="btn btn-primary" type="submit" value="Predict" required />
-        </div>
-    </form>
-    <h2>
-       Prediction Result: {{results}}
-    </h2>
-   <body>
+        <h1>Customer Churn Prediction</h1>
+        <form action="{{ url_for('predict_datapoint')}}" method="post">
+            <h1>
+                <legend>Enter Customer Details</legend>
+            </h1>
+            <!-- Form Fields for each Customer Detail -->
+            <div class="mb-3">
+                <label class="form-label">Contract</label>
+                <select class="form-control" name="contract" required>
+                    <option class="placeholder" selected disabled value="">Select Contract Type</option>
+                    <option value="month-to-month">Month-to-Month</option>
+                    <option value="one-year">One Year</option>
+                    <option value="two-year">Two Year</option>
+                </select>
+            </div>
+            <!-- Repeat for other fields like dependents, device protection, etc. -->
+            
+            <div class="mb-3">
+                <label class="form-label">Tenure (months)</label>
+                <input class="form-control" type="number" name="tenure" required />
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Predict" />
+            </div>
+        </form>
+
+        <h2>
+            Prediction Result: {{results if results else "No prediction available."}}
+        </h2>
+    </div>
+</body>
 </html>

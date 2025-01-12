@@ -2,6 +2,7 @@ from flask import Flask, request, render_template
 import pandas as pd
 from src.pipeline.predict_pipeline import PredictPipeline
 
+
 application = Flask(__name__)
 app = application
 
@@ -37,11 +38,13 @@ class CustomInputData:
 
 @app.route('/')
 def index():
+    """Render the index.html page."""
     return render_template('index.html')
 
 
 @app.route('/predictdata', methods=['GET', 'POST'])
 def predict_datapoint():
+    """Handle predictions based on user input."""
     if request.method == 'GET':
         return render_template('home.html')
     else:
@@ -61,14 +64,16 @@ def predict_datapoint():
 
             # Convert the input data to a DataFrame
             pred_df = input_data.get_data_as_dataframe()
-            print(pred_df)
+
+            # Debugging: Print the DataFrame to console
+            print("Input DataFrame:\n", pred_df)
 
             # Create an instance of the PredictPipeline and predict
             predict_pipeline = PredictPipeline()
             results = predict_pipeline.predict(pred_df)
 
             # Render the result on the home page
-            return render_template('home.html', results=results[0])
+            return render_template('home.html', results=f"Churn Prediction: {results[0]}")
 
         except Exception as e:
             # Handle exceptions and display an error message
